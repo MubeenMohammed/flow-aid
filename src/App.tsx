@@ -1,16 +1,24 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import FullPageWaiting from "./app/FullPageWaiting";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <FullPageWaiting />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<FullPageWaiting />} />
+        <Route 
+          path="/games" 
+          element={
+            <div className="h-screen flex items-center justify-center">
+              <h1 className="text-2xl font-bold text-gray-800">
+                Games Page Coming Soon
+              </h1>
+            </div>
+          } 
+        />
+      </Routes>
+    </Router>
   );
 }
 
