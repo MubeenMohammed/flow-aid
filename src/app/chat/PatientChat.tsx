@@ -13,8 +13,7 @@ interface Message {
   timestamp: string;
 }
 
-const SOCKET_URL =
-  "https://a772-2607-fa49-6663-a100-c58f-75f1-d08b-8e58.ngrok-free.app";
+const SOCKET_URL = "http://localhost:3000";
 
 const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);

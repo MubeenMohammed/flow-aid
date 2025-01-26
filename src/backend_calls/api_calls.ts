@@ -6,7 +6,6 @@ export const fetchUserDetails = async (userId: string) => {
       `https://ifem-award-mchacks-2025.onrender.com/api/v1/patient/${userId}`
     );
     const userDetails = response.data;
-    toggleSmsfeatureOn(userId);
     return userDetails;
   } catch (error) {
     console.error("Error fetching user details:", error);
