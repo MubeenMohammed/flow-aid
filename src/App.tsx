@@ -2,6 +2,7 @@ import FullPageWaiting from "./app/FullPageWaiting";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./app/login/page";
 import Patientchat from "./app/chat/PatientChat";
+import GamesPage from "./app/games/GamesPage";
 
 function App() {
   return (
@@ -22,13 +23,11 @@ function App() {
           />
           <Route
             path="/games"
-            element={
-              <div className="h-screen flex items-center justify-center">
-                <h1 className="text-2xl font-bold text-gray-800">
-                  Games Page Coming Soon
-                </h1>
-              </div>
-            }
+            element={<GamesPage />}
+          />
+          <Route
+            path="/games/memory"
+            element={<div>Memory Game Coming Soon</div>}
           />
         </Routes>
       </Router>
