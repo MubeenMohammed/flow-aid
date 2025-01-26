@@ -20,6 +20,7 @@ export function LoginForm({
     try {
       // Fetch user details using patient ID
       const userDetails = await fetchUserDetails(patientId);
+      userDetails.name = name;
       if (userDetails) {
         localStorage.setItem("user", JSON.stringify(userDetails));
         navigate("/dashboard");

@@ -1,105 +1,85 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
 
-// Define message and user interfaces for type safety
 interface User {
   id: string;
   name: string;
 }
 
 interface Message {
-  id: string;
+  userId: string;
+  username: string;
   text: string;
-  user: User;
-  timestamp: number;
+  timestamp: string;
 }
 
-const PatientChat: React.FC = () => {
+const SOCKET_URL = "http://localhost:3000";
+
+const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [socket, setSocket] = useState<any>(null);
   const [connectionStatus, setConnectionStatus] = useState<
     "connecting" | "connected" | "disconnected"
   >("connecting");
-  const ws = useRef<WebSocket | null>(null);
+  const [room, setRoom] = useState<string>("default-room");
 
-  // Current user - in a real app, this would come from authentication
   const currentUser: User = {
-    id: "user_" + Math.random().toString(36).substr(2, 9),
-    name: "Patient",
+    id: `user_${Math.random().toString(36).substr(2, 9)}`,
+    name: localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string).name
+      : "Patient",
   };
 
-  const connectWebSocket = useCallback(() => {
-    // Replace with your actual WebSocket server URL
-    const wsUrl = "ws://your-websocket-server/messages/TestRoom";
-
-    ws.current = new WebSocket(wsUrl);
-    setConnectionStatus("connecting");
-
-    ws.current.onopen = () => {
-      setConnectionStatus("connected");
-      console.log("WebSocket connection established");
-    };
-
-    ws.current.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        const incomingMessage: Message = {
-          id: data.id || Date.now().toString(),
-          text: data.text,
-          user: data.user || {
-            id: "unknown",
-            name: "Unknown User",
-          },
-          timestamp: Date.now(),
-        };
-        setMessages((prev) => [...prev, incomingMessage]);
-      } catch (error) {
-        console.error("Error parsing message:", error);
-      }
-    };
-
-    ws.current.onclose = () => {
-      setConnectionStatus("disconnected");
-      console.log("WebSocket connection closed");
-      // Attempt reconnection after a delay
-      setTimeout(connectWebSocket, 3000);
-    };
-
-    ws.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-      setConnectionStatus("disconnected");
-    };
-  }, []);
-
   useEffect(() => {
-    connectWebSocket();
+    const newSocket = io(SOCKET_URL);
+
+    newSocket.on("connect", () => {
+      setConnectionStatus("connected");
+      newSocket.emit("joinRoom", room);
+    });
+
+    newSocket.on("disconnect", () => {
+      setConnectionStatus("disconnected");
+    });
+
+    newSocket.on("message", (message: Message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    newSocket.on(
+      "userJoined",
+      (data: { userId: string; userCount: number }) => {
+        console.log(
+          `User ${data.userId} joined. Users in room: ${data.userCount}`
+        );
+      }
+    );
+
+    newSocket.on("userLeft", (data: { userId: string; userCount: number }) => {
+      console.log(`User ${data.userId} left. Users in room: ${data.userCount}`);
+    });
+
+    setSocket(newSocket);
 
     return () => {
-      if (ws.current?.readyState === WebSocket.OPEN) {
-        ws.current.close();
-      }
+      newSocket.close();
     };
-  }, [connectWebSocket]);
+  }, [room]);
 
   const sendMessage = () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || !socket) return;
 
-    if (ws.current?.readyState === WebSocket.OPEN) {
-      const message: Message = {
-        id: Date.now().toString(),
-        text: inputValue,
-        user: currentUser,
-        timestamp: Date.now(),
-      };
+    const username = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string).name
+      : "Patient";
 
-      ws.current.send(JSON.stringify(message));
-      setMessages((prev) => [...prev, message]);
-      setInputValue("");
-    }
+    socket.emit("chatMessage", { text: inputValue, username });
+    setInputValue("");
   };
 
   return (
-    <div className="flex flex-col h-full max-w-md mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
-      {/* Connection Status */}
+    <div className="flex flex-col h-full mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
       <div
         className={`p-2 text-center text-sm ${
           connectionStatus === "connected"
@@ -110,26 +90,25 @@ const PatientChat: React.FC = () => {
         }`}
       >
         {connectionStatus === "connected"
-          ? "Connected"
+          ? `Connected to ${room}`
           : connectionStatus === "connecting"
           ? "Connecting..."
-          : "Disconnected - Reconnecting"}
+          : "Disconnected"}
       </div>
 
-      {/* Message List */}
       <div className="flex-grow overflow-y-auto p-4 space-y-3">
         {messages.map((message) => (
           <div
-            key={message.id}
+            key={message.timestamp}
             className={`flex ${
-              message.user?.id === currentUser.id
+              message.userId === currentUser.id
                 ? "justify-end"
                 : "justify-start"
             }`}
           >
             <div
               className={`max-w-[75%] px-3 py-2 rounded-lg ${
-                message.user?.id === currentUser.id
+                message.userId === currentUser.id
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-800"
               }`}
@@ -137,19 +116,19 @@ const PatientChat: React.FC = () => {
               <p className="text-sm">{message.text}</p>
               <small
                 className={`block text-xs mt-1 ${
-                  message.user?.id === currentUser.id
+                  message.userId === currentUser.id
                     ? "text-blue-100"
                     : "text-gray-500"
                 }`}
               >
-                {message.user?.name || "Unknown User"}
+                {message.username} •{" "}
+                {new Date(message.timestamp).toLocaleTimeString()}
               </small>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Message Input */}
       <div className="p-4 border-t flex items-center">
         <input
           type="text"
@@ -172,4 +151,4 @@ const PatientChat: React.FC = () => {
   );
 };
 
-export default PatientChat;
+export default ChatComponent;
