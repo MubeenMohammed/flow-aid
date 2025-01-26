@@ -1,3 +1,4 @@
+import "./App.css";
 import FullPageWaiting from "./app/FullPageWaiting";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./app/login/page";
@@ -9,10 +10,22 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/dashboard" element={<FullPageWaiting />} />
-          <Route path="/chat" element={<Patientchat />} />
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/games" element={<GamesPage />} />
+          <Route
+            path="/dashboard"
+            element={<FullPageWaiting />}
+          />
+          <Route
+            path="/chat"
+            element={<Patientchat />}
+          />
+          <Route
+            path="/"
+            element={<LoginPage />}
+          />
+          <Route
+            path="/games"
+            element={<GamesPage />}
+          />
         </Routes>
       </Router>
     </>

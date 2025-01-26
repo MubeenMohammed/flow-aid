@@ -59,7 +59,7 @@ const InfoBlock = ({
 const QueueAnimation = () => (
   <div className="relative h-24 bg-blue-50/50 rounded-lg overflow-hidden flex items-center justify-center">
     <img
-      src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWtoZWlmamF2YWtidmxzMmUxemkydmNtcW1vb3RtZjNpbXl6M3ZkdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f4V2mqvv0wT9m/giphy.gif"
+      src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHh0M3U2NDB5bmJmenA0MHJwMHFyMm42cWN1Ymx4NXF5czM3aXpnZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Rk2vpkjp446amkIwIz/giphy.gif"
       alt="Queue animation"
       className="h-20 object-contain"
     />
@@ -112,7 +112,7 @@ const FullPageWaiting = () => {
   const estimatedWait = waitTimes[patient.triage_category];
 
   return (
-    <div className="w-full h-screen flex flex-col bg-gradient-to-br from-blue-50 to-white overflow-hidden">
+    <div className="w-screen h-screen flex flex-col bg-gradient-to-br from-blue-50 to-white overflow-hidden">
       <header className="w-full bg-white border-b shadow-sm">
         <div className="w-full">
           <div className="flex justify-between items-center h-14 px-4">
@@ -143,10 +143,10 @@ const FullPageWaiting = () => {
         </div>
       </header>
 
-      <div className="flex-1 w-full">
+      <div className="flex-1 w-full ">
         <div className="flex gap-3 w-full h-[calc(100vh-3.5rem)]">
           {/* Left Section - 65% */}
-          <div className="w-[65%] p-4 space-y-4">
+          <div className="w-[75%] p-4 space-y-4">
             {/* Patient Info Card */}
             <Card className="shadow-sm">
               <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-3">
@@ -270,7 +270,7 @@ const FullPageWaiting = () => {
           </div>
 
           {/* Right Section - Chat - 35% */}
-          <div className="w-[35%] pr-4">
+          <div className="w-[25%] flex-end">
             <Patientchat />
           </div>
         </div>

@@ -1,0 +1,16 @@
+{
+  "name": "websocket-backend",
+  "version": "1.0.0",
+  "description": "a backend to handle chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Mubeen Mohammed",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.8.1"
+  }
+}
