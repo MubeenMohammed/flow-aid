@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Clock,
   Users,
-  ChevronDown,
   Activity,
   Clipboard,
   Heart,
@@ -12,7 +11,6 @@ import {
   TestTube,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import Patientchat from "./chat/PatientChat";
 
 // Separate components for better organization

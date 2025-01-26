@@ -50,7 +50,18 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+  		animation: {
+  			'spin-slow': 'spin 3s linear infinite',
+  			'spin-slower': 'spin 4s linear infinite',
+  			'run': 'run 3s linear infinite',
+  		},
+  		keyframes: {
+  			run: {
+  				'0%': { transform: 'translateX(-100%)' },
+  				'100%': { transform: 'translateX(400%)' },
+  			},
+  		},
   	}
   },
   plugins: [require("tailwindcss-animate")],
