@@ -97,7 +97,7 @@ const FullPageWaiting = () => {
   const estimatedWait = patient.triage_category * 30 - patient.time_elapsed;
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-white overflow-x-hidden">
+    <div className="w-full h-screen flex flex-col bg-gradient-to-br from-blue-50 to-white overflow-hidden">
       <header className="w-full bg-white border-b shadow-sm">
         <div className="w-full">
           <div className="flex justify-between items-center h-14 px-4">
@@ -127,19 +127,20 @@ const FullPageWaiting = () => {
           </div>
         </div>
       </header>
+
       <div className="flex-1 w-full">
-        <div className="flex gap-4 w-full h-[calc(100vh-3.5rem)]">
+        <div className="flex gap-3 w-full h-[calc(100vh-3.5rem)]">
           {/* Left Section - 65% */}
-          <div className="w-[65%] p-6 space-y-6">
+          <div className="w-[65%] p-4 space-y-4">
             {/* Patient Info Card */}
             <Card className="shadow-sm">
-              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-4">
+              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-3">
                 <CardTitle className="flex items-center gap-2 text-blue-800">
                   <Clipboard size={20} />
                   Patient Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <div className="grid grid-cols-3 gap-6">
                   <InfoBlock
                     label="Patient ID"
@@ -162,7 +163,7 @@ const FullPageWaiting = () => {
 
             {/* Queue Status Card */}
             <Card className="shadow-sm">
-              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-4">
+              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-3">
                 <div className="flex justify-between items-center">
                   <CardTitle className="flex items-center gap-2 text-blue-800">
                     <Users size={20} />
@@ -174,10 +175,10 @@ const FullPageWaiting = () => {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-6">
+              <CardContent className="p-4">
+                <div className="space-y-4">
                   <QueueAnimation />
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-4">
                     <InfoBlock
                       label="Your Position"
                       value={`${patient.queue_position.global} of ${data.waitingCount}`}
@@ -195,13 +196,13 @@ const FullPageWaiting = () => {
 
             {/* Treatment Progress Card */}
             <Card className="shadow-sm">
-              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-4">
+              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-3">
                 <CardTitle className="text-blue-800">
                   Treatment Progress
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-3 gap-6">
+              <CardContent className="p-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div className="flex flex-col p-4 bg-green-50 rounded-lg border border-green-100">
                     <div className="flex items-center gap-2 mb-2">
                       <Activity
@@ -244,12 +245,11 @@ const FullPageWaiting = () => {
           </div>
 
           {/* Right Section - Chat - 35% */}
-          <div className="w-[35%]">
+          <div className="w-[35%] pr-4">
             <Patientchat />
           </div>
         </div>
       </div>
-      =
     </div>
   );
 };
