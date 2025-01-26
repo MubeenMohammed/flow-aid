@@ -143,16 +143,16 @@ const FullPageWaiting = () => {
                 Home
               </Link>
               <Link
-                to="/games"
-                className="text-gray-600 hover:text-gray-800 px-3 py-2 font-medium transition-colors"
-              >
-                Games
-              </Link>
-              <Link
                 to="/mindful"
                 className="text-gray-600 hover:text-gray-800 px-3 py-2 font-medium transition-colors"
               >
                 Mindful Moments
+              </Link>
+              <Link
+                to="/games"
+                className="text-gray-600 hover:text-gray-800 px-3 py-2 font-medium transition-colors"
+              >
+                Games
               </Link>
             </nav>
           </div>
