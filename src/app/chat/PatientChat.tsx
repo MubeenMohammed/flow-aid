@@ -101,7 +101,7 @@ const ChatComponent: React.FC = () => {
           <div
             key={message.timestamp}
             className={`flex ${
-              message.userId === currentUser.id
+              message.username === currentUser.name
                 ? "justify-end"
                 : "justify-start"
             }`}

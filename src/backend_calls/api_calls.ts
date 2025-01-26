@@ -8,8 +8,8 @@ export const fetchUserDetails = async (userId: string) => {
     const userDetails = response.data;
     return userDetails;
   } catch (error) {
+    alert("User Has Been Discharged!");
     console.error("Error fetching user details:", error);
-    throw error;
   }
 };
 
@@ -21,7 +21,7 @@ export const toggleSmsfeatureOn = async (userId: string) => {
     );
     console.log(response);
   } catch (error) {
-    console.error("Error fetching user details:", error);
+    alert("Error fetching user details:");
     throw error;
   }
 };
