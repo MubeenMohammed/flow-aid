@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Patientchat from "./chat/PatientChat";
 
 // Separate components for better organization
 const StatusBadge = ({ status }: { status: string }) => {
@@ -60,9 +61,9 @@ const InfoBlock = ({
 const QueueAnimation = () => (
   <div className="relative h-24 bg-blue-50/50 rounded-lg overflow-hidden flex items-center justify-center">
     <img
-      src="https://cdn.shopify.com/s/files/1/0098/8990/6788/files/queue-wait.gif?v=1585989223"
+      src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHh0M3U2NDB5bmJmenA0MHJwMHFyMm42cWN1Ymx4NXF5czM3aXpnZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Rk2vpkjp446amkIwIz/giphy.gif"
       alt="Queue animation"
-      className="h-16 object-contain"
+      className="h-20 object-contain"
     />
   </div>
 );
@@ -243,24 +244,8 @@ const FullPageWaiting = () => {
           </div>
 
           {/* Right Section - Chat - 35% */}
-          <div className="w-[35%] p-6">
-            <Card className="h-full shadow-sm flex flex-col">
-              <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white py-3 flex-shrink-0">
-                <CardTitle className="text-blue-800">Group Chat</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 flex-1 min-h-0">
-                <div className="flex items-center justify-center h-full bg-gradient-to-b from-blue-50 to-white rounded-lg border border-blue-100">
-                  <div className="text-center p-8">
-                    <h3 className="text-2xl font-semibold text-blue-800 mb-3">
-                      Group Chat Coming Soon
-                    </h3>
-                    <p className="text-gray-600">
-                      Connect with others in the waiting room
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="w-[35%]">
+            <Patientchat />
           </div>
         </div>
       </div>
