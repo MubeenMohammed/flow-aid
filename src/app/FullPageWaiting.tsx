@@ -59,7 +59,7 @@ const InfoBlock = ({
 const QueueAnimation = () => (
   <div className="relative h-24 bg-blue-50/50 rounded-lg overflow-hidden flex items-center justify-center">
     <img
-      src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHh0M3U2NDB5bmJmenA0MHJwMHFyMm42cWN1Ymx4NXF5czM3aXpnZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Rk2vpkjp446amkIwIz/giphy.gif"
+      src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWtoZWlmamF2YWtidmxzMmUxemkydmNtcW1vb3RtZjNpbXl6M3ZkdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f4V2mqvv0wT9m/giphy.gif"
       alt="Queue animation"
       className="h-20 object-contain"
     />
@@ -88,6 +88,7 @@ const FullPageWaiting = () => {
       time_elapsed: 45,
     },
   };
+
   const userData = localStorage.getItem("user");
   const localStoragedata = userData ? JSON.parse(userData) : null;
   if (localStoragedata) {
@@ -98,9 +99,17 @@ const FullPageWaiting = () => {
     data.patientData.time_elapsed = localStoragedata.time_elapsed;
     data.patientData.triage_category = localStoragedata.triage_category;
   }
-
   const patient = data.patientData;
-  const estimatedWait = patient.triage_category * 30 - patient.time_elapsed;
+
+  const waitTimes: { [key: number]: number } = {
+    1: 0,
+    2: 25,
+    3: 76,
+    4: 143,
+    5: 176,
+  };
+
+  const estimatedWait = waitTimes[patient.triage_category];
 
   return (
     <div className="w-full h-screen flex flex-col bg-gradient-to-br from-blue-50 to-white overflow-hidden">

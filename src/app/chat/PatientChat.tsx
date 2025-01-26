@@ -1,96 +1,175 @@
-import {
-  MinChatUiProvider,
-  MainContainer,
-  MessageInput,
-  MessageContainer,
-  MessageList,
-  MessageHeader,
-} from "@minchat/react-chat-ui";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
-const myColorSet = {
-  // input
-  "--input-background-color": "#FAFAFA",
-  "--input-text-color": "#FFFFFF",
-  "--input-element-color": "#007AFF",
-  "--input-attach-color": "#757575",
-  "--input-send-color": "#007AFF",
-  "--input-placeholder-color": "#BDBDBD",
+// Define message and user interfaces for type safety
+interface User {
+  id: string;
+  name: string;
+}
 
-  // message header
-  "--message-header-background-color": "#FFFFFF",
-  "--message-header-text-color": "#2C2C2C",
-  "--message-header-last-active-color": "#007AFF",
-  "--message-header-back-color": "#757575",
+interface Message {
+  id: string;
+  text: string;
+  user: User;
+  timestamp: number;
+}
 
-  // chat list header
-  "--chatlist-header-background-color": "#FFFFFF",
-  "--chatlist-header-text-color": "#2C2C2C",
-  "--chatlist-header-divider-color": "#EEEEEE",
+const PatientChat: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [connectionStatus, setConnectionStatus] = useState<
+    "connecting" | "connected" | "disconnected"
+  >("connecting");
+  const ws = useRef<WebSocket | null>(null);
 
-  //chatlist
-  "--chatlist-background-color": "#FFFFFF",
-  "--no-conversation-text-color": "#757575",
+  // Current user - in a real app, this would come from authentication
+  const currentUser: User = {
+    id: "user_" + Math.random().toString(36).substr(2, 9),
+    name: "Patient",
+  };
 
-  //chat item
-  "--chatitem-background-color": "#FFFFFF",
-  "--chatitem-selected-background-color": "#F5F9FF",
-  "--chatitem-title-text-color": "#2C2C2C",
-  "--chatitem-content-text-color": "#757575",
-  "--chatitem-hover-color": "#F8F8F8",
+  const connectWebSocket = useCallback(() => {
+    // Replace with your actual WebSocket server URL
+    const wsUrl = "ws://your-websocket-server/messages/TestRoom";
 
-  //main container
-  "--container-background-color": "#FFFFFF",
+    ws.current = new WebSocket(wsUrl);
+    setConnectionStatus("connecting");
 
-  //loader
-  "--loader-color": "#007AFF",
+    ws.current.onopen = () => {
+      setConnectionStatus("connected");
+      console.log("WebSocket connection established");
+    };
 
-  //message list
-  "--messagelist-background-color": "#FFFFFF",
-  "--no-message-text-color": "#757575",
+    ws.current.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        const incomingMessage: Message = {
+          id: data.id || Date.now().toString(),
+          text: data.text,
+          user: data.user || {
+            id: "unknown",
+            name: "Unknown User",
+          },
+          timestamp: Date.now(),
+        };
+        setMessages((prev) => [...prev, incomingMessage]);
+      } catch (error) {
+        console.error("Error parsing message:", error);
+      }
+    };
 
-  // incoming message
-  "--incoming-message-text-color": "#2C2C2C",
-  "--incoming-message-name-text-color": "#757575",
-  "--incoming-message-background-color": "#F0F0F0",
-  "--incoming-message-timestamp-color": "#BDBDBD",
-  "--incoming-message-link-color": "#007AFF",
+    ws.current.onclose = () => {
+      setConnectionStatus("disconnected");
+      console.log("WebSocket connection closed");
+      // Attempt reconnection after a delay
+      setTimeout(connectWebSocket, 3000);
+    };
 
-  //outgoing message
-  "--outgoing-message-text-color": "#FFFFFF",
-  "--outgoing-message-background-color": "#007AFF",
-  "--outgoing-message-timestamp-color": "#E0E0E0",
-  "--outgoing-message-checkmark-color": "#FFFFFF",
-  "--outgoing-message-loader-color": "#FFFFFF",
-  "--outgoing-message-link-color": "#FFFFFF",
+    ws.current.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      setConnectionStatus("disconnected");
+    };
+  }, []);
+
+  useEffect(() => {
+    connectWebSocket();
+
+    return () => {
+      if (ws.current?.readyState === WebSocket.OPEN) {
+        ws.current.close();
+      }
+    };
+  }, [connectWebSocket]);
+
+  const sendMessage = () => {
+    if (!inputValue.trim()) return;
+
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      const message: Message = {
+        id: Date.now().toString(),
+        text: inputValue,
+        user: currentUser,
+        timestamp: Date.now(),
+      };
+
+      ws.current.send(JSON.stringify(message));
+      setMessages((prev) => [...prev, message]);
+      setInputValue("");
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-full max-w-md mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
+      {/* Connection Status */}
+      <div
+        className={`p-2 text-center text-sm ${
+          connectionStatus === "connected"
+            ? "bg-green-100 text-green-800"
+            : connectionStatus === "connecting"
+            ? "bg-yellow-100 text-yellow-800"
+            : "bg-red-100 text-red-800"
+        }`}
+      >
+        {connectionStatus === "connected"
+          ? "Connected"
+          : connectionStatus === "connecting"
+          ? "Connecting..."
+          : "Disconnected - Reconnecting"}
+      </div>
+
+      {/* Message List */}
+      <div className="flex-grow overflow-y-auto p-4 space-y-3">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex ${
+              message.user?.id === currentUser.id
+                ? "justify-end"
+                : "justify-start"
+            }`}
+          >
+            <div
+              className={`max-w-[75%] px-3 py-2 rounded-lg ${
+                message.user?.id === currentUser.id
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+            >
+              <p className="text-sm">{message.text}</p>
+              <small
+                className={`block text-xs mt-1 ${
+                  message.user?.id === currentUser.id
+                    ? "text-blue-100"
+                    : "text-gray-500"
+                }`}
+              >
+                {message.user?.name || "Unknown User"}
+              </small>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Message Input */}
+      <div className="p-4 border-t flex items-center">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="Type a message..."
+          disabled={connectionStatus !== "connected"}
+          className="flex-grow mr-2 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          onClick={sendMessage}
+          disabled={!inputValue.trim() || connectionStatus !== "connected"}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  );
 };
 
-export default function Patientchat() {
-  return (
-    <MinChatUiProvider
-      theme="#6ea9d7"
-      colorSet={myColorSet}
-    >
-      <MainContainer>
-        <MessageContainer>
-          <MessageHeader />
-          <MessageList
-            currentUserId="dan"
-            messages={[
-              {
-                text: "Hello",
-                user: {
-                  id: "mark",
-                  name: "Markus",
-                },
-              },
-            ]}
-          />
-          <MessageInput
-            placeholder="Type message here"
-            showSendButton={true}
-          />
-        </MessageContainer>
-      </MainContainer>
-    </MinChatUiProvider>
-  );
-}
+export default PatientChat;
