@@ -37,6 +37,13 @@ const GameCard = ({ title, icon: Icon, description, path, comingSoon = true }) =
 const GamesPage = () => {
   const games = [
     {
+      title: "Serenity Quest",
+      icon: Heart,
+      description: "An immersive journey through calming environments to reduce anxiety and promote mindfulness.",
+      path: "/games/serenity-quest",
+      comingSoon: false
+    },
+    {
       title: "Memory Match",
       icon: Brain,
       description: "Test your memory by matching pairs of cards. Improve focus and concentration.",
@@ -56,22 +63,10 @@ const GamesPage = () => {
       path: "/games/trivia"
     },
     {
-      title: "Stress Relief",
-      icon: Dices,
-      description: "Simple and relaxing games to help reduce anxiety while waiting.",
-      path: "/games/stress-relief"
-    },
-    {
       title: "Health Quiz",
       icon: Swords,
       description: "Test your health knowledge with interactive quizzes.",
       path: "/games/quiz"
-    },
-    {
-      title: "Wellness Journey",
-      icon: Heart,
-      description: "A calming adventure game focused on health and wellness.",
-      path: "/games/wellness"
     }
   ];
 
