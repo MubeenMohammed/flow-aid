@@ -228,15 +228,59 @@ const MeditationTimer = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    if (audioRef.current) {
+      // Enable looping for seamless playback
+      audioRef.current.loop = true;
+      // Optional: Fade in the audio
+      audioRef.current.volume = 0;
+      if (isPlaying) {
+        audioRef.current.play();
+        // Gradual fade in
+        const fadeIn = setInterval(() => {
+          if (audioRef.current && audioRef.current.volume < 1) {
+            audioRef.current.volume = Math.min(1, audioRef.current.volume + 0.1);
+          } else {
+            clearInterval(fadeIn);
+          }
+        }, 100);
+      }
+    }
+  }, [isPlaying, selectedSound]);
+
+  // When timer ends or reset is clicked
+  const stopAudio = () => {
+    if (audioRef.current) {
+      // Gradual fade out
+      const fadeOut = setInterval(() => {
+        if (audioRef.current && audioRef.current.volume > 0) {
+          audioRef.current.volume = Math.max(0, audioRef.current.volume - 0.1);
+        } else {
+          clearInterval(fadeOut);
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+          }
+        }
+      }, 100);
+    }
+  };
+
+  const resetMeditation = () => {
+    stopAudio();
+    setSelectedTime(null);
+    setSelectedSound(null);
+    setTimeRemaining(0);
+    setIsPlaying(false);
+    setIsMuted(false);
+  };
+
+  useEffect(() => {
     if (isPlaying && timeRemaining > 0) {
       timerRef.current = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev <= 1) {
             setIsPlaying(false);
-            if (audioRef.current) {
-              audioRef.current.pause();
-              audioRef.current.currentTime = 0;
-            }
+            stopAudio(); // Fade out audio when time is up
             return 0;
           }
           return prev - 1;
@@ -282,18 +326,6 @@ const MeditationTimer = () => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const resetMeditation = () => {
-    setSelectedTime(null);
-    setSelectedSound(null);
-    setTimeRemaining(0);
-    setIsPlaying(false);
-    setIsMuted(false);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
   };
 
   return (
