@@ -9,59 +9,59 @@ import {
 
 const myColorSet = {
   // input
-  "--input-background-color": "var(--background-muted)", // Muted background color for inputs
-  "--input-text-color": "var(--foreground)", // Default foreground for input text
-  "--input-element-color": "var(--primary)", // Primary color for interactive elements
-  "--input-attach-color": "var(--primary)", // Primary color for attach icon
-  "--input-send-color": "var(--primary)", // Primary color for send icon
-  "--input-placeholder-color": "var(--muted-foreground)", // Muted foreground for placeholders
+  "--input-background-color": "#FAFAFA",
+  "--input-text-color": "#FFFFFF",
+  "--input-element-color": "#007AFF",
+  "--input-attach-color": "#757575",
+  "--input-send-color": "#007AFF",
+  "--input-placeholder-color": "#BDBDBD",
 
   // message header
-  "--message-header-background-color": "var(--background)", // Default background for header
-  "--message-header-text-color": "var(--foreground)", // Default foreground for text
-  "--message-header-last-active-color": "var(--muted-foreground)", // Muted foreground for last active time
-  "--message-header-back-color": "var(--background-muted)", // Muted background for back button
+  "--message-header-background-color": "#FFFFFF",
+  "--message-header-text-color": "#2C2C2C",
+  "--message-header-last-active-color": "#007AFF",
+  "--message-header-back-color": "#757575",
 
   // chat list header
-  "--chatlist-header-background-color": "var(--background)", // Default background for chat list header
-  "--chatlist-header-text-color": "var(--foreground)", // Default foreground for header text
-  "--chatlist-header-divider-color": "var(--border)", // Border color for dividers
+  "--chatlist-header-background-color": "#FFFFFF",
+  "--chatlist-header-text-color": "#2C2C2C",
+  "--chatlist-header-divider-color": "#EEEEEE",
 
-  // chat list
-  "--chatlist-background-color": "var(--background-muted)", // Muted background for chat list
-  "--no-conversation-text-color": "var(--muted-foreground)", // Muted foreground for empty state text
+  //chatlist
+  "--chatlist-background-color": "#FFFFFF",
+  "--no-conversation-text-color": "#757575",
 
-  // chat item
-  "--chatitem-background-color": "var(--background)", // Default background for chat items
-  "--chatitem-selected-background-color": "var(--accent-muted)", // Muted accent for selected item
-  "--chatitem-title-text-color": "var(--foreground)", // Default foreground for titles
-  "--chatitem-content-text-color": "var(--muted-foreground)", // Muted foreground for content
-  "--chatitem-hover-color": "var(--background-hover)", // Hover background color
+  //chat item
+  "--chatitem-background-color": "#FFFFFF",
+  "--chatitem-selected-background-color": "#F5F9FF",
+  "--chatitem-title-text-color": "#2C2C2C",
+  "--chatitem-content-text-color": "#757575",
+  "--chatitem-hover-color": "#F8F8F8",
 
-  // main container
-  "--container-background-color": "var(--background-muted)", // Muted background for main container
+  //main container
+  "--container-background-color": "#FFFFFF",
 
-  // loader
-  "--loader-color": "var(--primary)", // Primary color for loaders
+  //loader
+  "--loader-color": "#007AFF",
 
-  // message list
-  "--messagelist-background-color": "var(--background)", // Default background for message list
-  "--no-message-text-color": "var(--muted-foreground)", // Muted foreground for empty message text
+  //message list
+  "--messagelist-background-color": "#FFFFFF",
+  "--no-message-text-color": "#757575",
 
   // incoming message
-  "--incoming-message-text-color": "var(--foreground)", // Default foreground for incoming message text
-  "--incoming-message-name-text-color": "var(--primary)", // Primary color for names
-  "--incoming-message-background-color": "var(--accent-muted)", // Muted accent for incoming message background
-  "--incoming-message-timestamp-color": "var(--muted-foreground)", // Muted foreground for timestamps
-  "--incoming-message-link-color": "var(--primary-hover)", // Hover effect for links
+  "--incoming-message-text-color": "#2C2C2C",
+  "--incoming-message-name-text-color": "#757575",
+  "--incoming-message-background-color": "#F0F0F0",
+  "--incoming-message-timestamp-color": "#BDBDBD",
+  "--incoming-message-link-color": "#007AFF",
 
-  // outgoing message
-  "--outgoing-message-text-color": "var(--foreground)", // Default foreground for outgoing message text
-  "--outgoing-message-background-color": "var(--background-muted)", // Muted background for outgoing messages
-  "--outgoing-message-timestamp-color": "var(--primary)", // Primary color for timestamps
-  "--outgoing-message-checkmark-color": "var(--primary)", // Primary color for checkmarks
-  "--outgoing-message-loader-color": "var(--primary)", // Primary color for loaders
-  "--outgoing-message-link-color": "var(--primary-hover)", // Hover effect for links
+  //outgoing message
+  "--outgoing-message-text-color": "#FFFFFF",
+  "--outgoing-message-background-color": "#007AFF",
+  "--outgoing-message-timestamp-color": "#E0E0E0",
+  "--outgoing-message-checkmark-color": "#FFFFFF",
+  "--outgoing-message-loader-color": "#FFFFFF",
+  "--outgoing-message-link-color": "#FFFFFF",
 };
 
 export default function Patientchat() {
