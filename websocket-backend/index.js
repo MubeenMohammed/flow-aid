@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
+const ngrok = require("ngrok");
+require("dotenv").config();
 const io = require("socket.io")(http, {
   cors: {
     origin: "*",
@@ -9,6 +11,7 @@ const io = require("socket.io")(http, {
 });
 
 const rooms = new Map();
+const ngrokAuthToken = process.env.NGROK_AUTHTOKEN;
 
 io.on("connection", (socket) => {
   let currentRoom = null;
@@ -64,7 +67,10 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-http.listen(PORT, () => {
-  console.log(`WebSocket server running on port ${PORT}`);
-});
+ngrok
+  .connect({
+    addr: 8080,
+    authtoken: ngrokAuthToken, // Use the token from the .env file
+  })
+  .then((url) => console.log(`Ingress established at: ${url}`))
+  .catch((error) => console.error("Failed to establish ingress:", error));
