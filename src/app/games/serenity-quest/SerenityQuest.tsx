@@ -25,7 +25,7 @@ const environments: Environment[] = [
     title: "Tropical Island",
     icon: Waves,
     description: "Gentle waves, palm trees swaying, and seashells scattered along the shore.",
-    preview: "/environments/tropical-preview.gif", // You'll need to add these assets
+    preview: "/environments/beach.gif",
     ambientSound: "/sounds/ocean-waves.mp3"
   },
   {
@@ -33,7 +33,7 @@ const environments: Environment[] = [
     title: "Enchanted Forest",
     icon: Trees,
     description: "Sunlight streaming through trees, glowing plants, and chirping birds.",
-    preview: "/environments/forest-preview.gif",
+    preview: "/environments/forest.gif",
     ambientSound: "/sounds/forest-sounds.mp3"
   },
   {
@@ -41,7 +41,7 @@ const environments: Environment[] = [
     title: "Starry Galaxy",
     icon: Stars,
     description: "A serene space with floating stars, constellations, and soothing cosmic sounds.",
-    preview: "/environments/galaxy-preview.gif",
+    preview: "/environments/space.gif",
     ambientSound: "/sounds/space-ambient.mp3"
   },
   {
@@ -49,7 +49,7 @@ const environments: Environment[] = [
     title: "Mountain Meadow",
     icon: Mountain,
     description: "Rolling hills, wildflowers, and a gentle breeze.",
-    preview: "/environments/meadow-preview.gif",
+    preview: "/environments/mountain.gif",
     ambientSound: "/sounds/meadow-breeze.mp3"
   }
 ];
@@ -66,6 +66,11 @@ const EnvironmentCard = ({ environment, onSelect }: { environment: Environment; 
           src={environment.preview} 
           alt={environment.title}
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            console.log(`Failed to load image: ${target.src}`);
+            target.src = 'https://placehold.co/600x400/EEE/31343C?text=Loading...';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="absolute bottom-0 left-0 p-4 text-white">
