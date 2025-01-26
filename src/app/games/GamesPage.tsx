@@ -39,12 +39,16 @@ const GameCard = ({ title, imageUrl, description, gameUrl }: Game) => (
         href={gameUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log('Opening game URL:', gameUrl); // For debugging
+        }}
       >
-        Play Now →
+        Play Now <span className="ml-2">→</span>
       </a>
     </CardContent>
-    <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
   </Card>
 );
 
