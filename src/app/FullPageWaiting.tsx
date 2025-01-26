@@ -70,28 +70,36 @@ const FullPageWaiting = () => {
   const data = {
     waitingCount: 25,
     longestWaitTime: 240,
-    patients: [
-      {
-        id: "anon_1234",
-        arrival_time: "2024-12-30T10:00:00",
-        triage_category: 3,
-        queue_position: {
-          global: 5,
-          category: 2,
-        },
-        status: {
-          current_phase: "triaged",
-          investigations: {
-            labs: "pending",
-            imaging: "ordered",
-          },
-        },
-        time_elapsed: 45,
+    patientData: {
+      id: "anon_1234",
+      arrival_time: "2024-12-30T10:00:00",
+      triage_category: 3,
+      queue_position: {
+        global: 5,
+        category: 2,
       },
-    ],
+      status: {
+        current_phase: "triaged",
+        investigations: {
+          labs: "pending",
+          imaging: "ordered",
+        },
+      },
+      time_elapsed: 45,
+    },
   };
+  const userData = localStorage.getItem("user");
+  const localStoragedata = userData ? JSON.parse(userData) : null;
+  if (localStoragedata) {
+    data.patientData.arrival_time = localStoragedata.arrival_time;
+    data.patientData.id = localStoragedata.id;
+    data.patientData.queue_position = localStoragedata.queue_position;
+    data.patientData.status = localStoragedata.status;
+    data.patientData.time_elapsed = localStoragedata.time_elapsed;
+    data.patientData.triage_category = localStoragedata.triage_category;
+  }
 
-  const patient = data.patients[0];
+  const patient = data.patientData;
   const estimatedWait = patient.triage_category * 30 - patient.time_elapsed;
 
   return (
@@ -222,7 +230,13 @@ const FullPageWaiting = () => {
                         Laboratory
                       </h3>
                     </div>
-                    <StatusBadge status={patient.status.investigations.labs} />
+                    <StatusBadge
+                      status={
+                        patient.status.investigations
+                          ? patient.status.investigations.labs
+                          : "Do not required"
+                      }
+                    />
                   </div>
 
                   <div className="flex flex-col p-4 bg-blue-50 rounded-lg border border-blue-100">
@@ -234,7 +248,11 @@ const FullPageWaiting = () => {
                       <h3 className="font-semibold text-blue-800">Imaging</h3>
                     </div>
                     <StatusBadge
-                      status={patient.status.investigations.imaging}
+                      status={
+                        patient.status.investigations
+                          ? patient.status.investigations.imaging
+                          : "Do not required"
+                      }
                     />
                   </div>
                 </div>
