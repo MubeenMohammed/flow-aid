@@ -1,4 +1,3 @@
-import "./App.css";
 import FullPageWaiting from "./app/FullPageWaiting";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./app/login/page";

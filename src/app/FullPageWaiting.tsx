@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Patientchat from "./chat/PatientChat";
+import { Button } from "@/components/ui/button";
+import { toggleSmsfeatureOff } from "@/backend_calls/api_calls";
 
 // Separate components for better organization
 const StatusBadge = ({ status }: { status: string }) => {
@@ -126,6 +128,14 @@ const FullPageWaiting = () => {
               </h1>
             </div>
             <nav className="flex space-x-8">
+              <Button
+                onClick={() => {
+                  localStorage.clear();
+                  toggleSmsfeatureOff(patient.id);
+                }}
+              >
+                <Link to="/">Logout</Link>
+              </Button>
               <Link
                 to="/"
                 className="text-blue-600 hover:text-blue-800 px-3 py-2 font-medium transition-colors"
