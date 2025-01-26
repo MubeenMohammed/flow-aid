@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./app/login/page";
 import Patientchat from "./app/chat/PatientChat";
 import GamesPage from "./app/games/GamesPage";
+import MindfulMoments from "./app/mindful/MindfulMoments";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             path="/games"
             element={<GamesPage />}
           />
+          <Route path="/mindful" element={<MindfulMoments />} />
         </Routes>
       </Router>
     </>

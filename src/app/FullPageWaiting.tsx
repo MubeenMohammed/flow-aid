@@ -138,6 +138,12 @@ const FullPageWaiting = () => {
               >
                 Games
               </Link>
+              <Link
+                to="/mindful"
+                className="text-gray-600 hover:text-gray-800 px-3 py-2 font-medium transition-colors"
+              >
+                Mindful Moments
+              </Link>
             </nav>
           </div>
         </div>
