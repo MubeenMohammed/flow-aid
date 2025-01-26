@@ -29,7 +29,8 @@ const PatientChat: React.FC = () => {
 
   const connectWebSocket = useCallback(() => {
     // Replace with your actual WebSocket server URL
-    const wsUrl = "ws://your-websocket-server/messages/TestRoom";
+    const wsUrl =
+      "ws://1457-142-157-232-12.ngrok-free.app/messages/Test%20Room";
 
     ws.current = new WebSocket(wsUrl);
     setConnectionStatus("connecting");
